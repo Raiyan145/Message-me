@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anonymous Message</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1>
+        Tell Me Anything.
+        <br>
+        Anonymously 👀
+      </h1>
+
+      <p class="subtitle">
+        Drop your secret thoughts, confessions,
+        or anything you want to say.
+      </p>
+
+      <textarea
+        id="message"
+        placeholder="Type your anonymous message..."
+      ></textarea>
+
+      <button onclick="sendMessage()">
+        Message Me
+      </button>
+
+      <p id="status"></p>
+
+    </div>
+
+  </div>
+
+  <script>
+    async function sendMessage() {
+
+      const message = document.getElementById("message").value;
+      const status = document.getElementById("status");
+
+      if(message.trim() === ""){
+        status.innerText = "Write something first 😶";
+        return;
+      }
+
+      try {
+
+        await fetch("YOUR_WEBHOOK_URL", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: message
+          })
+        });
+
+        status.innerText = "Message sent anonymously ✅";
+        document.getElementById("message").value = "";
+
+      } catch(err){
+        status.innerText = "Something went wrong ❌";
+      }
+
+    }
+  </script>
+
+</body>
+</html>
